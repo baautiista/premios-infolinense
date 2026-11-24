@@ -1,5 +1,7 @@
 # Despliegue en Cloudflare y conexión de premios.infolinense.com
 
+> **Vía rápida (sin terminal):** crea en GitHub los secretos `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`, `VOTE_PEPPER`, `SESSION_SECRET`, `TURNSTILE_SECRET`, `ADMIN_EMAIL` y `ADMIN_PASSWORD`, y las variables `TURNSTILE_SITE_KEY` y (cuando el dominio esté en Cloudflare) `CUSTOM_DOMAIN`. Después: **Actions → Desplegar en Cloudflare → Run workflow**. El flujo crea la base de datos y el bucket, aplica migraciones, guarda los secretos y crea el usuario del panel. El resto de este documento explica el proceso manual equivalente.
+
 Pasos para poner en marcha la plataforma por primera vez. Todo se hace una sola vez; después, cada despliegue es un botón en GitHub Actions.
 
 > **Antes de empezar:** necesitas acceso a la cuenta de Cloudflare donde está el dominio `infolinense.com`, y Node.js 22 en tu ordenador.

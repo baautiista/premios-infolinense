@@ -58,7 +58,9 @@ async function route(request: Request, env: Env): Promise<Response> {
 }
 
 export default {
-  async fetch(request: Request, env: Env): Promise<Response> {
+  async fetch(request: Request, rawEnv: Env): Promise<Response> {
+    // Sin SITE_URL configurada (p. ej. en la dirección provisional *.workers.dev) se usa el origen de la visita.
+    const env: Env = rawEnv.SITE_URL ? rawEnv : { ...rawEnv, SITE_URL: new URL(request.url).origin };
     try {
       const res = await route(request, env);
       if (!res.headers.has("X-Content-Type-Options")) res.headers.set("X-Content-Type-Options", "nosniff");

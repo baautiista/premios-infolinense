@@ -1,12 +1,20 @@
 name: Desplegar en Cloudflare
 
-# Despliegue manual: Actions → «Desplegar en Cloudflare» → Run workflow.
-# Requiere los secretos del repositorio CLOUDFLARE_API_TOKEN y CLOUDFLARE_ACCOUNT_ID.
+# Actions → «Desplegar en Cloudflare» → Run workflow.
+# La primera vez crea la base de datos D1 y el bucket R2, aplica las migraciones,
+# guarda los secretos en Cloudflare y da de alta el usuario del panel.
+#
+# Secretos del repositorio (Settings → Secrets and variables → Actions → Secrets):
+#   CLOUDFLARE_API_TOKEN, CLOUDFLARE_ACCOUNT_ID, TURNSTILE_SECRET, VOTE_PEPPER, SESSION_SECRET,
+#   ADMIN_EMAIL, ADMIN_PASSWORD
+# Variables del repositorio (pestaña Variables), opcionales:
+#   TURNSTILE_SITE_KEY  · clave pública de Turnstile (sin ella la votación permanece desactivada)
+#   CUSTOM_DOMAIN       · premios.infolinense.com, cuando el dominio esté en Cloudflare
 on:
   workflow_dispatch:
     inputs:
-      migrate:
-        description: "Aplicar migraciones de base de datos antes de desplegar"
+      create_admin:
+        description: "Crear o actualizar el usuario del panel (ADMIN_EMAIL / ADMIN_PASSWORD)"
         type: boolean
         default: true
 
@@ -21,23 +29,92 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     timeout-minutes: 20
-    environment: production
     env:
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
       CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      DB_NAME: premios-infolinense
+      BUCKET: premios-infolinense-media
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+
+      - name: Comprobar secretos
+        env:
+          S1: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          S2: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          S3: ${{ secrets.VOTE_PEPPER }}
+          S4: ${{ secrets.SESSION_SECRET }}
+        run: |
+          missing=""
+          [ -z "$S1" ] && missing="$missing CLOUDFLARE_API_TOKEN"
+          [ -z "$S2" ] && missing="$missing CLOUDFLARE_ACCOUNT_ID"
+          [ ${#S3} -lt 24 ] && missing="$missing VOTE_PEPPER(mín.24)"
+          [ ${#S4} -lt 24 ] && missing="$missing SESSION_SECRET(mín.24)"
+          if [ -n "$missing" ]; then echo "::error::Faltan secretos en GitHub:$missing"; exit 1; fi
+
       - run: npm install --no-audit --no-fund
       - run: npm run build
       - run: node --no-warnings --test --test-concurrency=1 tests/*.test.mjs
-      - name: Punto de restauración previo (D1 Time Travel)
-        if: ${{ inputs.migrate }}
-        run: npx wrangler d1 time-travel info premios-infolinense
-      - name: Migraciones
-        if: ${{ inputs.migrate }}
-        run: npx wrangler d1 migrations apply premios-infolinense --remote
+
+      - name: Base de datos D1 (se crea si no existe)
+        run: |
+          ID=$(npx wrangler d1 list --json | node -e 'let d="";process.stdin.on("data",c=>d+=c).on("end",()=>{const l=JSON.parse(d);const x=l.find(b=>b.name===process.env.DB_NAME);process.stdout.write(x?x.uuid:"")})')
+          if [ -z "$ID" ]; then
+            npx wrangler d1 create "$DB_NAME"
+            ID=$(npx wrangler d1 list --json | node -e 'let d="";process.stdin.on("data",c=>d+=c).on("end",()=>{const l=JSON.parse(d);process.stdout.write(l.find(b=>b.name===process.env.DB_NAME).uuid)})')
+          fi
+          echo "D1: $ID"
+          sed -i "s/REEMPLAZAR_CON_EL_ID_DE_D1/$ID/" wrangler.toml
+
+      - name: Bucket R2 para fotografías (se crea si no existe)
+        run: |
+          if ! npx wrangler r2 bucket list 2>/dev/null | grep -q "$BUCKET"; then
+            npx wrangler r2 bucket create "$BUCKET" || { echo "::error::No se pudo crear el bucket R2. Activa R2 en el panel de Cloudflare (menú R2) y vuelve a lanzar el despliegue."; exit 1; }
+          fi
+
+      - name: Punto de restauración y migraciones
+        run: |
+          npx wrangler d1 time-travel info "$DB_NAME" || true
+          npx wrangler d1 migrations apply "$DB_NAME" --remote
+
+      - name: Dominio propio (si está configurado)
+        if: ${{ vars.CUSTOM_DOMAIN != '' }}
+        run: |
+          printf '\nroutes = [\n  { pattern = "%s", custom_domain = true }\n]\n' "${{ vars.CUSTOM_DOMAIN }}" > routes.toml
+          # La clave routes debe ir antes de las tablas: se inserta tras la línea workers_dev.
+          sed -i "/^workers_dev = true/r routes.toml" wrangler.toml
+
       - name: Despliegue
-        run: npx wrangler deploy
+        env:
+          SITE_URL_VAR: ${{ vars.CUSTOM_DOMAIN != '' && format('https://{0}', vars.CUSTOM_DOMAIN) || '' }}
+          TS_KEY: ${{ vars.TURNSTILE_SITE_KEY }}
+        run: |
+          ARGS=""
+          [ -n "$SITE_URL_VAR" ] && ARGS="$ARGS --var SITE_URL:$SITE_URL_VAR"
+          [ -n "$TS_KEY" ] && ARGS="$ARGS --var TURNSTILE_SITE_KEY:$TS_KEY"
+          npx wrangler deploy $ARGS | tee deploy.log
+          echo "### Web desplegada" >> $GITHUB_STEP_SUMMARY
+          grep -Eo 'https://[^ ]+(workers\.dev|infolinense\.com)[^ ]*' deploy.log | sort -u | sed 's/^/- /' >> $GITHUB_STEP_SUMMARY || true
+
+      - name: Secretos del Worker
+        env:
+          TURNSTILE_SECRET: ${{ secrets.TURNSTILE_SECRET }}
+          VOTE_PEPPER: ${{ secrets.VOTE_PEPPER }}
+          SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
+        run: |
+          node -e 'const o={VOTE_PEPPER:process.env.VOTE_PEPPER,SESSION_SECRET:process.env.SESSION_SECRET};if(process.env.TURNSTILE_SECRET)o.TURNSTILE_SECRET=process.env.TURNSTILE_SECRET;require("fs").writeFileSync("secrets.json",JSON.stringify(o),{mode:0o600})'
+          npx wrangler secret bulk secrets.json
+          rm -f secrets.json
+
+      - name: Usuario del panel
+        if: ${{ inputs.create_admin }}
+        env:
+          ADMIN_EMAIL: ${{ secrets.ADMIN_EMAIL }}
+          ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
+        run: |
+          if [ -z "$ADMIN_EMAIL" ] || [ ${#ADMIN_PASSWORD} -lt 12 ]; then echo "::warning::ADMIN_EMAIL o ADMIN_PASSWORD (mín. 12) no configurados: no se crea usuario."; exit 0; fi
+          node scripts/create-admin.mjs "$ADMIN_EMAIL" "Administración" admin
+          npx wrangler d1 execute "$DB_NAME" --remote --file=.admin-user.sql
+          rm -f .admin-user.sql

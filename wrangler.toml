@@ -7,9 +7,8 @@ compatibility_date = "2025-09-01"
 no_bundle = true
 workers_dev = true
 
-routes = [
-  { pattern = "premios.infolinense.com", custom_domain = true }
-]
+# El dominio premios.infolinense.com se añade en el despliegue (variable CUSTOM_DOMAIN de GitHub)
+# cuando infolinense.com esté gestionado desde Cloudflare. Mientras, la web usa la dirección *.workers.dev.
 
 [assets]
 directory = "dist/client"
@@ -26,10 +25,9 @@ binding = "MEDIA"
 bucket_name = "premios-infolinense-media"
 
 [vars]
-SITE_URL = "https://premios.infolinense.com"
 ENVIRONMENT = "production"
-# Clave pública de Turnstile (no es secreta). Sustituir por la del widget creado en Cloudflare.
-TURNSTILE_SITE_KEY = ""
+# SITE_URL y TURNSTILE_SITE_KEY se inyectan en el despliegue desde las variables de GitHub.
+# Si SITE_URL no se define, se usa la dirección desde la que se visita la web.
 
 # Secretos (NO se guardan aquí). Crear con:
 #   npx wrangler secret put TURNSTILE_SECRET
