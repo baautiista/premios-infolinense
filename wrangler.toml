@@ -1,0 +1,40 @@
+# Premios InfoLinense — Cloudflare Workers
+# Antes del primer despliegue: crea la base de datos y el bucket (ver docs/DESPLIEGUE.md)
+# y sustituye database_id por el identificador que te devuelva Cloudflare.
+name = "premios-infolinense"
+main = "dist/worker/index.js"
+compatibility_date = "2025-09-01"
+no_bundle = true
+workers_dev = true
+
+routes = [
+  { pattern = "premios.infolinense.com", custom_domain = true }
+]
+
+[assets]
+directory = "dist/client"
+binding = "ASSETS"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "premios-infolinense"
+database_id = "REEMPLAZAR_CON_EL_ID_DE_D1"
+migrations_dir = "migrations"
+
+[[r2_buckets]]
+binding = "MEDIA"
+bucket_name = "premios-infolinense-media"
+
+[vars]
+SITE_URL = "https://premios.infolinense.com"
+ENVIRONMENT = "production"
+# Clave pública de Turnstile (no es secreta). Sustituir por la del widget creado en Cloudflare.
+TURNSTILE_SITE_KEY = ""
+
+# Secretos (NO se guardan aquí). Crear con:
+#   npx wrangler secret put TURNSTILE_SECRET
+#   npx wrangler secret put VOTE_PEPPER
+#   npx wrangler secret put SESSION_SECRET
+
+[observability]
+enabled = true

@@ -1,0 +1,28 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install --no-audit --no-fund
+      - name: Tipos (TypeScript)
+        run: npx tsc --noEmit
+      - name: Build
+        run: npm run build
+      - name: Pruebas de votación, seguridad y fases
+        run: node --no-warnings --test --test-concurrency=1 tests/*.test.mjs
+      - name: Validación del Worker con Wrangler (sin desplegar)
+        run: npx wrangler deploy --dry-run --outdir .wrangler-dry

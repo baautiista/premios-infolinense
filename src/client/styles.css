@@ -1,0 +1,268 @@
+@import "tailwindcss";
+
+/* Tipografías servidas desde la propia web (sin Google Fonts: más rápido y sin ceder datos a terceros). Licencia OFL. */
+@font-face {
+  font-family: "Raleway";
+  src: url("/fonts/raleway-latin-wght.woff") format("woff");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Poppins";
+  src: url("/fonts/poppins-latin-medium.woff") format("woff");
+  font-weight: 500 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Poppins";
+  src: url("/fonts/poppins-latin-bold.woff") format("woff");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/*
+ * Sistema de diseño de los Premios InfoLinense 2026.
+ * Colores y tipografías tomados de las publicaciones oficiales:
+ *   fondo: degradado azul (claro arriba a la derecha → oscuro abajo a la izquierda)
+ *   titulares: Raleway ExtraBold · etiquetas: Poppins Bold · textos: Raleway Medium
+ */
+@theme {
+  --color-electric: #1f5eff;
+  --color-night: #061e5c;
+  --color-navy: #081a54;
+  --color-deep: #0b2a86;
+  --color-royal: #1038ac;
+  --color-bright: #154dd5;
+  --color-mid: #2756cd;
+  --color-mist: #c3d2ff;
+  --color-haze: #8fa8ec;
+  --color-silver: #d9e2f2;
+  --color-lime: #c8f031;
+
+  --font-sans: "Raleway", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: "Raleway", ui-sans-serif, system-ui, sans-serif;
+  --font-tag: "Poppins", ui-sans-serif, system-ui, sans-serif;
+
+  --ease-brand: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@layer base {
+  html {
+    color-scheme: dark;
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+  }
+  body {
+    @apply min-h-screen font-sans font-medium text-white antialiased;
+    background: #0b2a86;
+  }
+  ::selection {
+    background: var(--color-lime);
+    color: var(--color-navy);
+  }
+  :focus-visible {
+    outline: 3px solid var(--color-lime);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+  a {
+    text-underline-offset: 0.18em;
+  }
+}
+
+@layer components {
+  /* Fondo oficial: degradado azul fijo detrás de todo el contenido. */
+  .brand-bg {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background:
+      radial-gradient(120% 80% at 100% 0%, #1652e0 0%, rgba(22, 82, 224, 0) 60%),
+      linear-gradient(to bottom left, #154dd5 0%, #1038ac 38%, #0c2a89 70%, #081d61 100%);
+  }
+
+  .display {
+    font-family: var(--font-display);
+    font-weight: 800;
+    letter-spacing: -0.035em;
+    line-height: 0.98;
+  }
+
+  .tag {
+    font-family: var(--font-tag);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    line-height: 1;
+    border-radius: 0.55em;
+    padding: 0.42em 0.62em 0.38em;
+    display: inline-flex;
+    align-items: center;
+    white-space: nowrap;
+  }
+
+  .kicker {
+    font-family: var(--font-tag);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    font-size: 0.72rem;
+  }
+
+  .btn {
+    @apply inline-flex min-h-12 items-center justify-center gap-2 rounded-full px-6 text-[0.95rem] font-bold transition duration-200;
+    font-family: var(--font-tag);
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+  /* Uso: class="btn btn-primary" */
+  .btn-primary {
+    @apply bg-white text-navy hover:bg-mist;
+  }
+  .btn-lime {
+    @apply bg-lime text-navy hover:brightness-105;
+  }
+  .btn-ghost {
+    @apply border-2 border-white/40 text-white hover:border-white hover:bg-white/10;
+  }
+
+  .prose-premios p {
+    @apply mb-4 text-[1.05rem] leading-relaxed text-white/90;
+  }
+  .prose-premios h2 {
+    @apply mt-10 mb-3 text-2xl font-extrabold text-white;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+  }
+  .prose-premios h3 {
+    @apply mt-6 mb-2 text-lg font-bold text-white;
+  }
+  .prose-premios ul {
+    @apply mb-5 space-y-2 pl-5 text-[1.05rem] leading-relaxed text-white/90;
+    list-style: none;
+  }
+  .prose-premios li {
+    position: relative;
+  }
+  .prose-premios li::before {
+    content: "";
+    position: absolute;
+    left: -1.05rem;
+    top: 0.65em;
+    width: 0.45rem;
+    height: 0.45rem;
+    border-radius: 999px;
+    background: var(--color-lime);
+  }
+  .prose-premios a {
+    @apply font-semibold text-white underline decoration-lime decoration-2;
+  }
+  .pending {
+    @apply rounded-md border border-dashed border-lime/70 bg-lime/10 px-1.5 py-0.5 text-[0.95em] text-lime;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Animaciones (desactivadas con «reducir movimiento»)                 */
+/* ------------------------------------------------------------------ */
+
+@keyframes logo-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.96);
+    filter: blur(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes sweep {
+  from {
+    background-position: 200% 0;
+  }
+  to {
+    background-position: -100% 0;
+  }
+}
+@keyframes portrait-in {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+    clip-path: inset(18% 18% 18% 18% round 28px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    clip-path: inset(0 0 0 0 round 28px);
+  }
+}
+
+.anim-logo {
+  animation: logo-in 0.9s var(--ease-brand) both;
+}
+.anim-rise {
+  animation: rise 0.7s var(--ease-brand) both;
+}
+.anim-delay-1 {
+  animation-delay: 0.15s;
+}
+.anim-delay-2 {
+  animation-delay: 0.3s;
+}
+.anim-delay-3 {
+  animation-delay: 0.45s;
+}
+.curve-draw path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+  animation: draw 1.6s var(--ease-brand) both;
+}
+.winner-name {
+  background: linear-gradient(100deg, #fff 0%, #fff 40%, var(--color-lime) 50%, #fff 60%, #fff 100%);
+  background-size: 220% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: sweep 1.8s 0.35s var(--ease-brand) both;
+}
+.portrait-in {
+  animation: portrait-in 0.9s var(--ease-brand) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-delay: 0ms !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .winner-name {
+    background: none;
+    color: #fff;
+  }
+}

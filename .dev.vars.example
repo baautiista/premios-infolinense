@@ -1,0 +1,8 @@
+# Copia este archivo como .dev.vars para desarrollo local. Nunca lo subas al repositorio.
+ENVIRONMENT=development
+SITE_URL=http://localhost:8787
+VOTE_PEPPER=cambia-esto-por-una-cadena-aleatoria-larga
+SESSION_SECRET=cambia-esto-por-otra-cadena-aleatoria-larga
+# Claves de prueba oficiales de Turnstile (siempre aprueban). Solo para desarrollo.
+TURNSTILE_SITE_KEY=1x00000000000000000000AA
+TURNSTILE_SECRET=1x0000000000000000000000000000000AA
