@@ -115,8 +115,8 @@ export function VotePage({ data, site }: { data: VoteData; site: SiteInfo }) {
     const saved = local?.getItem(LS_DEVICE);
     if (saved) headers["X-Device-Token"] = saved;
     fetch("/api/vote/status", { headers, credentials: "same-origin" })
-      .then((r) => r.json())
-      .then((s: Status) => {
+      .then((r) => r.json() as Promise<Status>)
+      .then((s) => {
         if (s.deviceToken) local?.setItem(LS_DEVICE, s.deviceToken);
         setStatus(s);
       })
@@ -458,7 +458,7 @@ export function ReceiptPage() {
     setResult(null);
     try {
       const res = await fetch("/api/vote/receipt", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ code: formatted }) });
-      const body = await res.json();
+      const body = (await res.json()) as { found: boolean; status?: string; at?: string; message?: string };
       if (!res.ok) setError(body.message ?? "No se ha podido comprobar el código.");
       else setResult(body);
     } catch {
