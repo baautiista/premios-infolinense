@@ -200,7 +200,6 @@ export function NomineePage({ data, site }: { data: NomineeData; site: SiteInfo 
             )}
             <ShareButton title={`${n.name} · Premios InfoLinense 2026`} text={`${n.name}, candidatura a ${c.name} en los Premios InfoLinense 2026`} path={`/nominados/${n.slug}`} />
           </div>
-          <p className="mt-8 text-sm text-mist">Estar nominado no significa haber ganado el premio.</p>
 
           {data.siblings.length > 0 && (
             <section className="mt-14 border-t border-white/20 pt-8">

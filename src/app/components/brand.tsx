@@ -178,10 +178,10 @@ export function Section({ children, className = "", id }: { children: ReactNode;
 
 /** Aviso fijo de transparencia. */
 export function NominationDisclaimer({ className = "", random = true }: { className?: string; random?: boolean }) {
+  if (!random) return null;
   return (
     <p className={`text-sm text-mist ${className}`}>
-      Estar nominado no significa haber ganado el premio.
-      {random ? " Las candidaturas se muestran en orden aleatorio en cada visita para que ninguna tenga ventaja." : ""}
+      Las candidaturas se muestran en orden aleatorio en cada visita para que ninguna tenga ventaja.
     </p>
   );
 }
