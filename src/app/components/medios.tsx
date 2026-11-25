@@ -23,8 +23,8 @@ export const MEDIOS: Record<Medio["id"], Medio> = {
     url: "https://infolinense.com",
     urlLabel: "infolinense.com",
     logo: "/brand/medios/infolinense.webp",
-    logoW: 640,
-    logoH: 162,
+    logoW: 720,
+    logoH: 181,
     claim: "Actualidad e información de La Línea de la Concepción.",
   },
   carnavalinense: {
@@ -81,13 +81,8 @@ export function Ext({ href, className = "", children, label }: { href: string; c
 /** Logotipo de un medio con el fondo que necesita para leerse sobre el azul de los premios. */
 export function MedioLogo({ medio, size = "md", className = "" }: { medio: Medio; size?: "xs" | "sm" | "md" | "lg"; className?: string }) {
   if (medio.id === "infolinense") {
-    const h = { xs: "h-4", sm: "h-5", md: "h-7", lg: "h-10" }[size];
-    const pad = { xs: "px-2.5 py-1.5", sm: "px-3 py-2", md: "px-4 py-2.5", lg: "px-6 py-4" }[size];
-    return (
-      <span className={`inline-flex items-center rounded-full bg-white ${pad} ${className}`}>
-        <img src={medio.logo} alt={medio.name} width={medio.logoW} height={medio.logoH} className={`${h} w-auto`} loading="lazy" decoding="async" />
-      </span>
-    );
+    const h = { xs: "h-6", sm: "h-8", md: "h-10", lg: "h-12" }[size];
+    return <img src={medio.logo} alt={medio.name} width={medio.logoW} height={medio.logoH} className={`${h} w-auto ${className}`} loading="lazy" decoding="async" />;
   }
   if (medio.id === "el-cofrade-linense") {
     const s = { xs: "h-6 w-6", sm: "h-8 w-8", md: "h-12 w-12", lg: "h-20 w-20" }[size];
@@ -157,15 +152,15 @@ export function SponsorChip({ slug }: { slug: string }) {
 export function InfoLinenseEditorial() {
   const m = MEDIOS.infolinense;
   return (
-    <div className="relative overflow-hidden rounded-[2rem] bg-white px-6 py-10 text-navy sm:px-12 sm:py-14">
+    <div className="relative overflow-hidden rounded-[2rem] bg-night/55 px-6 py-10 ring-1 ring-white/15 sm:px-12 sm:py-14">
       <div className="grid items-center gap-8 md:grid-cols-[1.4fr_1fr]">
         <div>
-          <p className="kicker text-[#2044dd]">El medio que organiza los premios</p>
+          <p className="kicker text-lime">El medio que organiza los premios</p>
           <h2 className="display mt-3 text-[clamp(2rem,6vw,3.2rem)]">Mucho más que unos premios</h2>
-          <p className="mt-5 max-w-xl text-[1.1rem] leading-relaxed">
+          <p className="mt-5 max-w-xl text-[1.1rem] leading-relaxed text-white/90">
             En InfoLinense contamos cada día lo que ocurre en nuestra ciudad. Las historias de sus vecinos, los proyectos que transforman nuestros barrios y el talento de quienes hacen grande a La Línea.
           </p>
-          <Ext href={m.url} className="btn mt-7 bg-navy text-white hover:bg-[#2044dd]">
+          <Ext href={m.url} className="btn btn-lime mt-7">
             Descubre InfoLinense <span aria-hidden="true">↗</span>
           </Ext>
         </div>
@@ -192,7 +187,7 @@ export function MediaPartners() {
             <Ext
               href={m.url}
               className={`group flex h-full flex-col justify-between gap-8 rounded-[1.75rem] p-6 ring-1 transition hover:-translate-y-0.5 ${
-                m.id === "infolinense" ? "bg-white text-navy ring-white" : m.id === "carnavalinense" ? "bg-night/50 ring-white/15 hover:ring-white/40" : "bg-[#222366] ring-white/15 hover:ring-white/40"
+                m.id === "infolinense" ? "bg-[#1a4de8] ring-white/25 hover:ring-white/60" : m.id === "carnavalinense" ? "bg-night/50 ring-white/15 hover:ring-white/40" : "bg-[#222366] ring-white/15 hover:ring-white/40"
               }`}
             >
               <div className="flex h-16 items-center">
@@ -206,8 +201,8 @@ export function MediaPartners() {
               </div>
               <div>
                 <h3 className="text-xl font-extrabold">{m.name}</h3>
-                <p className={`mt-1 leading-snug ${m.id === "infolinense" ? "text-navy/80" : "text-white/85"}`}>{m.claim}</p>
-                <p className={`mt-5 inline-flex items-center gap-1.5 text-sm font-bold underline decoration-2 underline-offset-4 ${m.id === "infolinense" ? "decoration-[#2044dd]" : "decoration-lime"}`}>
+                <p className="mt-1 leading-snug text-white/85">{m.claim}</p>
+                <p className={`mt-5 inline-flex items-center gap-1.5 text-sm font-bold underline decoration-2 underline-offset-4 decoration-lime`}>
                   {m.urlLabel} <span aria-hidden="true">↗</span>
                 </p>
               </div>
@@ -236,10 +231,10 @@ export function CategoryInfoLinenseNote() {
 export function ThanksInfoLinense() {
   const m = MEDIOS.infolinense;
   return (
-    <div className="mt-10 w-full max-w-md rounded-[2rem] bg-white p-6 text-left text-navy">
+    <div className="mt-10 w-full max-w-md rounded-[2rem] bg-[#1a4de8] p-6 text-left ring-1 ring-white/25">
       <img src={m.logo} alt="InfoLinense" width={m.logoW} height={m.logoH} className="h-7 w-auto" loading="lazy" decoding="async" />
       <p className="mt-4 text-lg font-bold leading-snug">¡Gracias por participar! Mientras esperamos los resultados, descubre todo lo que ocurre en La Línea.</p>
-      <Ext href={m.url} className="btn mt-5 w-full bg-navy text-white hover:bg-[#2044dd] sm:w-auto">
+      <Ext href={m.url} className="btn btn-primary mt-5 w-full sm:w-auto">
         Leer InfoLinense <span aria-hidden="true">↗</span>
       </Ext>
     </div>
