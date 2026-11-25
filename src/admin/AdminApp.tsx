@@ -556,7 +556,7 @@ function Categories({ run, user }: Ctx) {
             <Field label="Pregunta de la campaña">
               <input className={input} value={edit.question ?? ""} onChange={(e) => setEdit({ ...edit, question: e.target.value })} />
             </Field>
-            <Field label="Nota sobre las candidaturas" hint="Ej.: «Cuatro candidaturas propuestas por la FLAVI»">
+            <Field label="Nota sobre las candidaturas" hint="Ej.: «Candidaturas propuestas por los vecinos»">
               <input className={input} value={edit.nomination_note ?? ""} onChange={(e) => setEdit({ ...edit, nomination_note: e.target.value })} />
             </Field>
             <Field label="Descripción ampliada (opcional)">

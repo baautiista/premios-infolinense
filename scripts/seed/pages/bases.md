@@ -16,7 +16,7 @@ La edición 2026 consta de once categorías con votación popular y un reconocim
 
 ## 4. Candidaturas
 
-Las candidaturas de cada categoría se presentan oficialmente el 25 de noviembre de 2026. Las de la categoría Acción de Barrio son propuestas por la FLAVI.
+Las candidaturas de cada categoría se presentan oficialmente el 25 de noviembre de 2026.
 
 [PENDIENTE: criterios de selección de las candidaturas y quién los aplica.]
 
