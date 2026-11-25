@@ -1,6 +1,7 @@
 import type { CategoriesData, HomeData, PublicCategory, SiteInfo, Sponsor } from "../../shared/types";
 import { formatMadrid, formatMadridDay } from "../../shared/time";
 import { BrandCurve, CategoryTag, Countdown, Logo, NominationDisclaimer, Portrait, Section } from "../components/brand";
+import { InfoLinenseEditorial, MediaPartners, SponsorChip } from "../components/medios";
 import { Link } from "../nav";
 
 function heroCountdown(site: SiteInfo): { target: string; label: string } | null {
@@ -182,7 +183,17 @@ export function HomePage({ data, site }: { data: HomeData; site: SiteInfo }) {
         <CategoryList categories={data.categories} showCounts={nominationsOut} />
       </Section>
 
+      {/* INFOLINENSE */}
+      <Section className="mt-24">
+        <InfoLinenseEditorial />
+      </Section>
+
       {data.sponsors.length > 0 && <Sponsors sponsors={data.sponsors} />}
+
+      {/* MEDIOS */}
+      <Section className="mt-24">
+        <MediaPartners />
+      </Section>
 
       {phase === "coming_soon" && site.phase.announce_at && (
         <Section className="mt-20">
@@ -235,6 +246,7 @@ export function CategoryList({ categories, showCounts }: { categories: PublicCat
               {c.question && <p className="mt-2 max-w-2xl text-[1.02rem] leading-snug text-white/80">{c.question}</p>}
               {c.description && <p className="mt-2 max-w-2xl text-[0.98rem] font-semibold leading-snug text-white">{c.description}</p>}
               {c.nomination_note && <p className="mt-2 max-w-2xl text-sm text-mist">{c.nomination_note}</p>}
+              <SponsorChip slug={c.slug} />
             </div>
             <span className="col-span-2 flex items-center gap-3 text-sm font-semibold text-mist md:col-span-1 md:justify-end">
               {!c.votable ? "Elige la redacción" : showCounts ? (c.nominee_count ? `${c.nominee_count} candidaturas` : "Candidaturas pendientes") : `${c.slots} candidaturas`}

@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { PublicCategory, PublicNominee, SiteInfo, VoteData } from "../../shared/types";
 import { formatMadrid } from "../../shared/time";
 import { BrandCurve, CategoryTag, Logo, Section, initials } from "../components/brand";
+import { ThanksInfoLinense } from "../components/medios";
 import { Link } from "../nav";
 
 type Cat = PublicCategory & { nominees: PublicNominee[] };
@@ -435,6 +436,7 @@ function Confirmation({ receipt }: { receipt: { code: string; at: string; count:
           <p className="mt-3 text-sm text-mist">Guárdalo (por ejemplo, con una captura). Te permite comprobar que tu papeleta está registrada. No muestra a quién has votado.</p>
           <p className="mt-2 text-xs text-white/60">{formatMadrid(receipt.at)}</p>
         </div>
+        <ThanksInfoLinense />
         <div className="mt-8 flex flex-col gap-3 sm:flex-row">
           <button type="button" className="btn btn-primary" onClick={share}>
             {copied ? "Enlace copiado" : "Invita a votar"}

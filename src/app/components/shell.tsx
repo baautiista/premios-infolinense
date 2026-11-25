@@ -2,6 +2,7 @@ import { useEffect, useState, type ReactNode } from "react";
 import type { SiteInfo } from "../../shared/types";
 import { Link, useNav } from "../nav";
 import { BrandCurve, Logo } from "./brand";
+import { FooterInfoLinense, OrganizerBadge } from "./medios";
 
 function navItems(site: SiteInfo) {
   const p = site.phase.phase;
@@ -36,13 +37,16 @@ export function Shell({ site, children, bare = false }: { site: SiteInfo; childr
       {!bare && (
         <header className="relative z-30">
           <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 pt-[max(1rem,env(safe-area-inset-top))] pb-3 sm:px-8">
-            {path === "/" ? (
-              <span className="kicker text-mist">I edición · 2026</span>
-            ) : (
-              <Link href="/" className="block w-32 sm:w-40" aria-label="Premios InfoLinense 2026 · Portada">
-                <Logo />
-              </Link>
-            )}
+            <div className="flex min-w-0 items-center gap-3 sm:gap-5">
+              {path === "/" ? (
+                <span className="kicker hidden text-mist sm:inline">I edición · 2026</span>
+              ) : (
+                <Link href="/" className="block w-28 shrink-0 sm:w-40" aria-label="Premios InfoLinense 2026 · Portada">
+                  <Logo />
+                </Link>
+              )}
+              <OrganizerBadge />
+            </div>
             <nav aria-label="Principal" className="hidden items-center gap-1 md:flex">
               {items.map((i) => (
                 <Link
@@ -112,9 +116,7 @@ function Footer({ site }: { site: SiteInfo }) {
           <div className="w-44">
             <Logo />
           </div>
-          <p className="mt-5 max-w-sm text-sm leading-relaxed text-mist">
-            Reconocimientos anuales organizados por InfoLinense, el periódico digital de La Línea de la Concepción.
-          </p>
+          <FooterInfoLinense />
         </div>
         <div>
           <p className="kicker mb-3 text-mist">Información</p>
@@ -150,11 +152,6 @@ function Footer({ site }: { site: SiteInfo }) {
                 </a>
               </li>
             )}
-            <li>
-              <a href="https://infolinense.com" className="hover:underline">
-                infolinense.com
-              </a>
-            </li>
           </ul>
         </div>
       </div>

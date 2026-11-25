@@ -32,7 +32,7 @@ Se usan como acento (etiquetas, selección en la papeleta, indicadores), nunca c
 | Vida Asociativa | `#2756CD` | blanco | Publicación |
 | Carnaval Linense | `#3A86FF` | blanco | Publicación |
 | Vocación Cofrade | `#080B8F` | blanco | Publicación «Cofrade Linense» |
-| Impulso Cofrade | `#A9C4FF` | `#080B8F` | Azul claro para diferenciarla de Vocación Cofrade (categorías independientes) |
+| Impulso Cofrade | `#222366` | blanco | Color oficial indicado por la organización |
 | Acción de Barrio | `#FFB627` | azul noche | Variante propuesta (sin publicación) |
 | Honor a la Trayectoria | `#D9E2F2` | azul noche | Variante plateada propuesta |
 
@@ -51,3 +51,11 @@ Los títulos de premio («Deportista del año»…) y las preguntas de cada cate
 Objetivo WCAG 2.2 AA: navegación por teclado, foco visible en lima, enlace «Saltar al contenido», papeleta con `fieldset` y `radio` nativos, avisos con `aria-live`, y animaciones desactivadas con «reducir movimiento».
 
 **Contraste a vigilar:** el texto blanco sobre el naranja de Comercio (`#FE8E1A`) no alcanza el mínimo de 3:1 ni siquiera en tamaño grande. Se mantiene en las etiquetas para respetar la identidad; si se prefiere priorizar la accesibilidad, cambia el color del texto de esa categoría a azul noche en el panel.
+
+## Medios colaboradores
+
+Logotipos originales descargados de sus webs oficiales el 25/11/2026 (`public/brand/medios/`):
+
+- InfoLinense (organizador): logotipo azul de infolinense.com. Sobre el azul de los premios se muestra siempre sobre fondo blanco.
+- Carnavalinense (patrocina Carnaval Linense): logotipo blanco de carnavalinense.com.
+- El Cofrade Linense (patrocina Vocación Cofrade e Impulso Cofrade): imagen de perfil de su Instagram oficial (150 × 150 px; conviene sustituirla por un original en mayor resolución).

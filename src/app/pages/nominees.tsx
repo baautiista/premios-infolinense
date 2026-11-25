@@ -1,6 +1,7 @@
 import { useState } from "react";
 import type { CategoryData, NomineeData, PublicCategory, PublicNominee, SiteInfo } from "../../shared/types";
 import { BrandCurve, CategoryTag, NominationDisclaimer, Portrait, Section } from "../components/brand";
+import { CategoryInfoLinenseNote, SponsorBand } from "../components/medios";
 import { Link } from "../nav";
 
 function CategoryHeader({ category, level = 1 }: { category: PublicCategory; level?: 1 | 2 }) {
@@ -58,6 +59,7 @@ export function CategoryPage({ data, site }: { data: CategoryData; site: SiteInf
         <BrandCurve className="absolute -left-40 top-0 h-[60rem] w-[60rem] max-w-none" />
         <Section className="relative">
           <CategoryHeader category={category} />
+          <SponsorBand slug={category.slug} categoryName={category.name} />
         </Section>
       </div>
 
@@ -110,6 +112,7 @@ export function CategoryPage({ data, site }: { data: CategoryData; site: SiteInf
             </Link>
           )}
         </nav>
+        <CategoryInfoLinenseNote />
       </Section>
     </>
   );
