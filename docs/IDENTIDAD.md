@@ -31,7 +31,8 @@ Se usan como acento (etiquetas, selección en la papeleta, indicadores), nunca c
 | Vocación Educativa | `#00AA4F` | blanco | Publicación |
 | Vida Asociativa | `#2756CD` | blanco | Publicación |
 | Carnaval Linense | `#3A86FF` | blanco | Publicación |
-| Vocación Cofrade / Impulso Cofrade | `#080B8F` | blanco | Publicación «Cofrade Linense» |
+| Vocación Cofrade | `#080B8F` | blanco | Publicación «Cofrade Linense» |
+| Impulso Cofrade | `#A9C4FF` | `#080B8F` | Azul claro para diferenciarla de Vocación Cofrade (categorías independientes) |
 | Acción de Barrio | `#FFB627` | azul noche | Variante propuesta (sin publicación) |
 | Honor a la Trayectoria | `#D9E2F2` | azul noche | Variante plateada propuesta |
 

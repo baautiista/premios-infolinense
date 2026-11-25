@@ -10,6 +10,11 @@ function CategoryHeader({ category, level = 1 }: { category: PublicCategory; lev
       <CategoryTag category={category} size="xl" />
       <H className="display mt-4 text-[clamp(2.3rem,8.5vw,4.8rem)]">{category.award_title ?? category.name}</H>
       {category.question && <p className="mt-4 max-w-[30ch] text-[clamp(1.1rem,3.6vw,1.45rem)] leading-snug text-white/90">{category.question}</p>}
+      {category.description && (
+        <p className="mt-5 max-w-xl rounded-2xl border-l-4 border-white bg-white/[0.07] px-5 py-4 text-left text-[1.05rem] leading-snug text-white">
+          {category.description}
+        </p>
+      )}
       {category.nomination_note && <p className="mt-4 max-w-xl text-sm text-mist">{category.nomination_note}</p>}
     </header>
   );

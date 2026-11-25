@@ -233,6 +233,7 @@ export function CategoryList({ categories, showCounts }: { categories: PublicCat
                 {c.award_title ?? c.name}
               </h3>
               {c.question && <p className="mt-2 max-w-2xl text-[1.02rem] leading-snug text-white/80">{c.question}</p>}
+              {c.description && <p className="mt-2 max-w-2xl text-[0.98rem] font-semibold leading-snug text-white">{c.description}</p>}
               {c.nomination_note && <p className="mt-2 max-w-2xl text-sm text-mist">{c.nomination_note}</p>}
             </div>
             <span className="col-span-2 flex items-center gap-3 text-sm font-semibold text-mist md:col-span-1 md:justify-end">

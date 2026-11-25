@@ -267,12 +267,15 @@ export function VotePage({ data, site }: { data: VoteData; site: SiteInfo }) {
       {step === "ballot" && (
         <Section className="mt-10 pb-36">
           <div className="space-y-16">
-            {cats.map((c) => (
-              <fieldset key={c.id} id={`categoria-${c.id}`} className="scroll-mt-6">
+            {cats.map((c, i) => (
+              <div key={c.id}>
+              {c.slug.endsWith("-cofrade") && !cats.slice(0, i).some((p) => p.slug.endsWith("-cofrade")) && <CofradeNotice />}
+              <fieldset id={`categoria-${c.id}`} className="scroll-mt-6">
                 <legend className="w-full">
                   <CategoryTag category={c} size="lg" />
                   <span className="display mt-3 block text-[clamp(1.8rem,6vw,2.8rem)]">{c.award_title ?? c.name}</span>
                   {c.question && <span className="mt-1 block max-w-2xl leading-snug text-white/80">{c.question}</span>}
+                  {c.description && <span className="mt-2 block max-w-2xl font-semibold leading-snug text-white">{c.description}</span>}
                 </legend>
                 <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
                   {c.nominees.map((n) => {
@@ -331,6 +334,7 @@ export function VotePage({ data, site }: { data: VoteData; site: SiteInfo }) {
                   )}
                 </p>
               </fieldset>
+              </div>
             ))}
           </div>
         </Section>
@@ -502,5 +506,15 @@ export function ReceiptPage() {
         </div>
       </div>
     </Section>
+  );
+}
+
+/** Aviso previo a los dos premios cofrades: son categorías independientes. */
+function CofradeNotice() {
+  return (
+    <p role="note" className="mb-8 flex max-w-2xl gap-3 rounded-2xl bg-white px-5 py-4 text-[1.02rem] font-semibold leading-snug text-navy">
+      <span aria-hidden="true" className="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full bg-[#080B8F] text-sm text-white">2</span>
+      Los premios cofrades cuentan con dos categorías independientes. Puedes elegir un candidato en cada una.
+    </p>
   );
 }
