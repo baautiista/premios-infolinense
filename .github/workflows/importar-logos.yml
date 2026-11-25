@@ -1,0 +1,39 @@
+name: Importar logotipos de medios
+# Descarga una vez los logotipos originales de los medios colaboradores y los guarda en el repositorio.
+on:
+  workflow_dispatch:
+    inputs:
+      infolinense:
+        description: URL del logotipo de InfoLinense
+        required: true
+      carnavalinense:
+        description: URL del logotipo de Carnavalinense
+        required: true
+      cofrade:
+        description: URL de la imagen de perfil de El Cofrade Linense
+        required: true
+permissions:
+  contents: write
+jobs:
+  importar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Descargar
+        env:
+          U1: ${{ inputs.infolinense }}
+          U2: ${{ inputs.carnavalinense }}
+          U3: ${{ inputs.cofrade }}
+        run: |
+          mkdir -p public/brand/medios
+          curl -fsSL -A "Mozilla/5.0" "$U1" -o public/brand/medios/infolinense-original.png
+          curl -fsSL -A "Mozilla/5.0" "$U2" -o public/brand/medios/carnavalinense-original.png
+          curl -fsSL -A "Mozilla/5.0" "$U3" -o public/brand/medios/el-cofrade-linense-original.jpg
+          file public/brand/medios/*
+      - name: Guardar
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898299+github-actions[bot]@users.noreply.github.com"
+          git add public/brand/medios
+          git commit -m "Logotipos originales de los medios colaboradores"
+          git push
