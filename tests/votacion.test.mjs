@@ -34,6 +34,8 @@ async function call(pathname, { method = "GET", body, ip = "203.0.113.10", ua = 
 
 async function setPhase(phase, extra = {}) {
   await env.DB.prepare("UPDATE settings SET value = ?1 WHERE key = 'phase'").bind(phase).run();
+  // Las pruebas no dependen de las fechas que traigan las migraciones.
+  await env.DB.prepare("UPDATE settings SET value = NULL WHERE key IN ('announce_at','voting_opens_at','voting_closes_at','results_at')").run();
   for (const [k, v] of Object.entries(extra)) await env.DB.prepare("UPDATE settings SET value = ?1 WHERE key = ?2").bind(v, k).run();
 }
 

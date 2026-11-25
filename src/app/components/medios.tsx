@@ -24,7 +24,7 @@ export const MEDIOS: Record<Medio["id"], Medio> = {
     urlLabel: "infolinense.com",
     logo: "/brand/medios/infolinense.webp",
     logoW: 720,
-    logoH: 181,
+    logoH: 182,
     claim: "Actualidad e información de La Línea de la Concepción.",
   },
   carnavalinense: {
