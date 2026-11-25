@@ -147,8 +147,8 @@ export function HomePage({ data, site }: { data: HomeData; site: SiteInfo }) {
               d: "No hay gala presencial: los ganadores se anuncian aquí, en una presentación digital.",
             },
             {
-              t: "Trofeo y Honor",
-              d: "Cada ganador recibe un trofeo físico. El Honor a la Trayectoria lo concede la redacción.",
+              t: "Un trofeo por premio",
+              d: "Cada candidatura ganadora recibe un trofeo físico como recuerdo del reconocimiento.",
             },
           ].map((s, i) => (
             <li key={s.t} className="relative border-t-2 border-white/25 pt-5">

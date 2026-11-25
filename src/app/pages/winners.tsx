@@ -62,7 +62,7 @@ export function WinnersPage({ data, site }: { data: WinnersData; site: SiteInfo 
           </div>
           <h1 className="display anim-rise anim-delay-1 mt-10 text-[clamp(2.4rem,9vw,4.6rem)]">Descubre a los ganadores</h1>
           <p className="anim-rise anim-delay-2 mt-4 max-w-[34ch] text-xl text-white/90">
-            {awards.length} premios. El público ha elegido; la redacción entrega el Honor a la Trayectoria.
+            {awards.length} premios elegidos por votación popular.
           </p>
           <div className="anim-rise anim-delay-3 mt-9 flex flex-col gap-3 sm:flex-row">
             <button type="button" className="btn btn-lime" onClick={() => go(0)}>
