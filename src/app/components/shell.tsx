@@ -3,6 +3,7 @@ import type { SiteInfo } from "../../shared/types";
 import { Link, useNav } from "../nav";
 import { BrandCurve, Logo } from "./brand";
 import { FooterInfoLinense, OrganizerBadge } from "./medios";
+import { ConsentBanner, openConsent } from "./consent";
 
 function navItems(site: SiteInfo) {
   const p = site.phase.phase;
@@ -103,6 +104,7 @@ export function Shell({ site, children, bare = false }: { site: SiteInfo; childr
         {children}
       </main>
       {!bare && <Footer site={site} />}
+      <ConsentBanner />
     </>
   );
 }
@@ -132,6 +134,11 @@ function Footer({ site }: { site: SiteInfo }) {
               <Link href="/comprobante" className="hover:underline">
                 Comprobar mi papeleta
               </Link>
+            </li>
+            <li>
+              <button type="button" className="text-left hover:underline" onClick={openConsent}>
+                Preferencias de cookies
+              </button>
             </li>
           </ul>
         </div>

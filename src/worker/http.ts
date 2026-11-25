@@ -57,14 +57,16 @@ export function cookie(
 
 /** Cabeceras de seguridad comunes a todas las respuestas HTML. */
 export function securityHeaders(headers: Headers, opts: { admin?: boolean } = {}) {
+  // Google Tag Manager / Analytics solo en la web pública (se carga tras el consentimiento).
+  const g = opts.admin ? "" : " https://www.googletagmanager.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com";
   const csp = [
     "default-src 'self'",
-    "script-src 'self' https://challenges.cloudflare.com",
+    `script-src 'self' https://challenges.cloudflare.com${opts.admin ? "" : " https://www.googletagmanager.com"}`,
     "style-src 'self' 'unsafe-inline'",
     "font-src 'self'",
-    "img-src 'self' data: blob:",
-    "connect-src 'self'",
-    "frame-src https://challenges.cloudflare.com",
+    `img-src 'self' data: blob:${g}`,
+    `connect-src 'self'${g}`,
+    `frame-src https://challenges.cloudflare.com${opts.admin ? "" : " https://www.googletagmanager.com"}`,
     "base-uri 'none'",
     "form-action 'self'",
     "frame-ancestors 'none'",
